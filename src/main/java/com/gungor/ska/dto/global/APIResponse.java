@@ -1,6 +1,7 @@
-package com.gungor.ska.dto.response;
+package com.gungor.ska.dto.global;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.gungor.ska.dto.global.ErrorDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

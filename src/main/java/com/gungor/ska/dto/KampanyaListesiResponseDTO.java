@@ -1,4 +1,4 @@
-package com.gungor.ska.dto.response;
+package com.gungor.ska.dto;
 
 import com.gungor.ska.entity.Kampanya;
 import lombok.Getter;
@@ -10,11 +10,8 @@ import java.util.List;
 @Getter
 @Setter
 public class KampanyaListesiResponseDTO {
-
     private int aktifKampanyaSayisi;
     private int deAktifKampanyaSayisi;
     private int onayBekleyenKampanyaSayisi;
-
     private List<Kampanya> kampanyaList;
-
 }

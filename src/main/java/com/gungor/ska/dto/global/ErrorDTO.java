@@ -1,4 +1,4 @@
-package com.gungor.ska.dto.response;
+package com.gungor.ska.dto.global;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,13 +1,10 @@
 package com.gungor.ska.entity;
 
-import com.gungor.ska.enm.KampanyaKategorisi;
 import com.gungor.ska.enm.KampanyaDurum;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.validation.constraints.Size;
+import com.gungor.ska.enm.KampanyaKategorisi;
+import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,14 +17,18 @@ public class Kampanya {
     @GeneratedValue
     private Long id;
 
+    @Column(nullable = false)
     private String ilanBaslik;
 
+    @Column(nullable = false)
     private String detayAciklamasi;
 
+    @Column(nullable = false)
     private KampanyaKategorisi kategori;
 
     private boolean isMukerrer;
 
+    @Column(nullable = false)
     private KampanyaDurum durum;
 
     @ElementCollection

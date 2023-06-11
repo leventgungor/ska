@@ -25,6 +25,5 @@ target/
 .AppleDouble
 .LSOverride
 
-### Database and Logs ###
-/data/
+### Logs ###
 /logs/

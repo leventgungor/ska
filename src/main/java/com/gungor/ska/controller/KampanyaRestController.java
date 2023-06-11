@@ -1,12 +1,13 @@
 package com.gungor.ska.controller;
 
-import com.gungor.ska.dto.response.APIResponse;
-import com.gungor.ska.dto.response.KampanyaListesiResponseDTO;
-import com.gungor.ska.entity.Kampanya;
-import com.gungor.ska.dto.request.KampanyaDurumRequestDTO;
-import com.gungor.ska.dto.request.KampanyaRequestDTO;
+import com.gungor.ska.dto.KampanyaDTO;
+import com.gungor.ska.dto.KampanyaListesiResponseDTO;
+import com.gungor.ska.dto.KampanyaRequestDTO;
+import com.gungor.ska.dto.global.APIResponse;
+import com.gungor.ska.mapper.KampanyaMapper;
 import com.gungor.ska.service.KampanyaService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,46 +25,49 @@ public class KampanyaRestController {
 
     private final KampanyaService kampanyaService;
 
+    private final KampanyaMapper kampanyaMapper;
+
     @PostMapping("/ekle")
     @Operation(summary = "Yeni kampanya ekler, aynı kampanya daha önce eklenmişse mükerrer olarak ekler")
-    public ResponseEntity<APIResponse<Kampanya>> kampanyaEkle(@Valid @RequestBody KampanyaRequestDTO requestDTO) {
-        Kampanya kayitEdilenKampanya= kampanyaService.kampanyaEkle(requestDTO);
+    public ResponseEntity<APIResponse<KampanyaDTO>> kampanyaEkle(@Valid @RequestBody KampanyaRequestDTO requestDTO) {
+        KampanyaDTO kampanyaDTO = kampanyaMapper.kampanyaRequestDTOtoKampanyaDTO(requestDTO);
+        KampanyaDTO kayitEdilenKampanya= kampanyaService.kampanyaEkle(kampanyaDTO);
 
-        APIResponse<Kampanya> responseDTO = APIResponse
-                .<Kampanya>builder()
+        APIResponse<KampanyaDTO> apiResponse = APIResponse
+                .<KampanyaDTO>builder()
                 .status("Kampanya başarıyla oluşturuldu.")
                 .results(kayitEdilenKampanya)
                 .build();
 
-        return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
+        return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
     }
 
-    @PostMapping("/aktive-et")
+    @GetMapping("/aktive-et")
     @Operation(summary = "Daha önce eklenmiş olan kampanyayı aktive eder")
-    public ResponseEntity<APIResponse<Kampanya>> kampanyaAktiveEt(@RequestBody KampanyaDurumRequestDTO requestDTO) {
-        Kampanya response = kampanyaService.kampanyaAktiveEt(requestDTO);
+    public ResponseEntity<APIResponse<KampanyaDTO>> kampanyaAktiveEt(@Schema(example = "1") @RequestParam String kampanyaId) {
+        KampanyaDTO kampanyaDTO = kampanyaService.kampanyaAktiveEt(kampanyaId);
 
-        APIResponse<Kampanya> responseDTO = APIResponse
-                .<Kampanya>builder()
+        APIResponse<KampanyaDTO> apiResponse = APIResponse
+                .<KampanyaDTO>builder()
                 .status("Kampanya başarıyla aktive edildi.")
-                .results(response)
+                .results(kampanyaDTO)
                 .build();
 
-        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
-    @PostMapping("/deaktive-et")
+    @GetMapping("/deaktive-et")
     @Operation(summary = "Daha önce eklenmiş olan kampanyayı deaktive eder")
-    public ResponseEntity<APIResponse<Kampanya>> kampanyaDeaktiveEt(@RequestBody KampanyaDurumRequestDTO requestDTO) {
-        Kampanya response = kampanyaService.kampanyaDeaktiveEt(requestDTO);
+    public ResponseEntity<APIResponse<KampanyaDTO>> kampanyaDeaktiveEt(@Schema(example = "1") @RequestParam String kampanyaId) {
+        KampanyaDTO kampanyaDTO = kampanyaService.kampanyaDeaktiveEt(kampanyaId);
 
-        APIResponse<Kampanya> responseDTO = APIResponse
-                .<Kampanya>builder()
+        APIResponse<KampanyaDTO> apiResponse = APIResponse
+                .<KampanyaDTO>builder()
                 .status("Kampanya başarıyla deaktive edildi.")
-                .results(response)
+                .results(kampanyaDTO)
                 .build();
 
-        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
     @GetMapping("/listele")

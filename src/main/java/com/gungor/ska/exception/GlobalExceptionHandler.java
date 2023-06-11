@@ -1,7 +1,7 @@
 package com.gungor.ska.exception;
 
-import com.gungor.ska.dto.response.APIResponse;
-import com.gungor.ska.dto.response.ErrorDTO;
+import com.gungor.ska.dto.global.APIResponse;
+import com.gungor.ska.dto.global.ErrorDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;

@@ -1,11 +1,15 @@
-package com.gungor.ska.dto.request;
+package com.gungor.ska.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class KampanyaRequestDTO {
 
     @Size(min = 10, max = 50, message = "İlan başlığı 10 ve 50 karakter arasında olmalıdır.")
