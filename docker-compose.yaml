@@ -1,0 +1,24 @@
+version: "3.8"
+services:
+  ska:
+    image: ska:0.0.1
+    container_name: ska
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:h2:file:./data/test
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=pass
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    ports:
+      - '8080:8080'
+    volumes:
+      - logVolume:/logs
+      - h2Volume:/data
+    networks:
+      - ska-net
+volumes:
+  logVolume:
+  h2Volume:
+
+networks:
+  ska-net:
+    driver: bridge
