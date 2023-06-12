@@ -3,12 +3,11 @@ package com.gungor.ska.integration;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gungor.ska.dto.KampanyaRequestDTO;
+import com.gungor.ska.enm.KampanyaDurum;
+import com.gungor.ska.enm.KampanyaKategorisi;
 import com.gungor.ska.entity.Kampanya;
 import com.gungor.ska.repo.KampanyaRepo;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +18,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -43,6 +43,11 @@ public class KampanyaControllerIntegrationTest {
         kampanyaRepo.deleteAll();
     }
 
+    @AfterEach
+    void tearDown(){
+        kampanyaRepo.deleteAll();
+    }
+
     @Test
     void givenKampanyaRequestDTO_whenKampanyaOlustur_thenReturnKampanyaDTO() throws Exception {
 
@@ -63,18 +68,79 @@ public class KampanyaControllerIntegrationTest {
                 .andExpect(jsonPath("$.results.ilanBaslik", is(kampanyaRequestDTO.getIlanBaslik())))
                 .andExpect(jsonPath("$.results.detayAciklamasi", is(kampanyaRequestDTO.getDetayAciklamasi())))
                 .andExpect(jsonPath("$.results.kategori", is(kampanyaRequestDTO.getKategori())));
-
-        Optional<Kampanya> byId = kampanyaRepo.findById(1L);
-        Assertions.assertNotNull(byId);
-        Assertions.assertAll(
-                () -> Assertions.assertEquals(byId.get().getIlanBaslik(),kampanyaRequestDTO.getIlanBaslik()),
-                () -> Assertions.assertEquals(byId.get().getDetayAciklamasi(),kampanyaRequestDTO.getDetayAciklamasi()),
-                () -> Assertions.assertEquals(byId.get().getKategori().getIsim(),kampanyaRequestDTO.getKategori())
-
-        );
-
     }
 
     @Test
-    
+    void givenKampanyaId_whenKampanyaAktiveEt_thenReturnKampanyaDTO() throws Exception {
+        //given
+        Kampanya kampanya1 = new Kampanya();
+        kampanya1.setIlanBaslik("Yolcu360 Ek İndirim Kampanyası");
+        kampanya1.setDetayAciklamasi("Allianz müşterileri yolcu360.com ve mobil uygulaması  üzerinden günlük  1-29 gün araç kiralamada indirimli fiyatlar üzerinden %10 ek indirim fırsatından yararlanıyor!");
+        kampanya1.setKategori(KampanyaKategorisi.D);
+        kampanya1.setDurum(KampanyaDurum.OnayBekliyor);
+        kampanya1.setMukerrer(false);
+
+        Kampanya savedKampanya = kampanyaRepo.save(kampanya1);
+
+        //when
+        ResultActions response = mockMvc.perform(get("/kampanya/aktive-et?kampanyaId={id}", savedKampanya.getId()).contentType(MediaType.APPLICATION_JSON));
+
+        //then
+        response.andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.results.ilanBaslik", is(kampanya1.getIlanBaslik())))
+                .andExpect(jsonPath("$.results.detayAciklamasi", is(kampanya1.getDetayAciklamasi())))
+                .andExpect(jsonPath("$.results.kategori", is(kampanya1.getKategori().getIsim())))
+                .andExpect(jsonPath("$.results.durum", is("Aktif")));
+    }
+
+    @Test
+    void givenKampanyaId_whenKampanyaDeaktiveEt_thenReturnKampanyaDTO() throws Exception {
+        //given
+        Kampanya kampanya1 = new Kampanya();
+        kampanya1.setIlanBaslik("Yolcu360 Ek İndirim Kampanyası");
+        kampanya1.setDetayAciklamasi("Allianz müşterileri yolcu360.com ve mobil uygulaması  üzerinden günlük  1-29 gün araç kiralamada indirimli fiyatlar üzerinden %10 ek indirim fırsatından yararlanıyor!");
+        kampanya1.setKategori(KampanyaKategorisi.D);
+        kampanya1.setDurum(KampanyaDurum.OnayBekliyor);
+        kampanya1.setMukerrer(false);
+
+        Kampanya savedKampanya = kampanyaRepo.save(kampanya1);
+
+        //when
+        ResultActions response = mockMvc.perform(get("/kampanya/deaktive-et?kampanyaId={id}", savedKampanya.getId()).contentType(MediaType.APPLICATION_JSON));
+
+        //then
+        response.andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.results.ilanBaslik", is(kampanya1.getIlanBaslik())))
+                .andExpect(jsonPath("$.results.detayAciklamasi", is(kampanya1.getDetayAciklamasi())))
+                .andExpect(jsonPath("$.results.kategori", is(kampanya1.getKategori().getIsim())))
+                .andExpect(jsonPath("$.results.durum", is("Deaktif")));
+    }
+
+    @Test
+    void givenKampanya_whenKampanyaListele_thenReturnKampanyaListesiDTO() throws Exception {
+        //given
+        Kampanya kampanya1 = new Kampanya();
+        kampanya1.setIlanBaslik("Yolcu360 Ek İndirim Kampanyası");
+        kampanya1.setDetayAciklamasi("Allianz müşterileri yolcu360.com ve mobil uygulaması  üzerinden günlük  1-29 gün araç kiralamada indirimli fiyatlar üzerinden %10 ek indirim fırsatından yararlanıyor!");
+        kampanya1.setKategori(KampanyaKategorisi.D);
+        kampanya1.setDurum(KampanyaDurum.OnayBekliyor);
+        kampanya1.setMukerrer(false);
+
+        kampanyaRepo.save(kampanya1);
+
+        //when
+        ResultActions response = mockMvc.perform(get("/kampanya/kampanyalari-listele")
+                .contentType(MediaType.APPLICATION_JSON));
+
+        //then
+        response.andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.results.aktifKampanyaSayisi", is(0)))
+                .andExpect(jsonPath("$.results.deAktifKampanyaSayisi", is(0)))
+                .andExpect(jsonPath("$.results.onayBekleyenKampanyaSayisi", is(1)))
+                .andExpect(jsonPath("$.results.kampanyaList.size()", is(1)));
+    }
+
 }

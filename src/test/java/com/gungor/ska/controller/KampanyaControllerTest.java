@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest
 @Tag("unit")
-public class KampanyaRestControllerTest {
+public class KampanyaControllerTest {
 
     @MockBean
     private KampanyaService kampanyaService;
@@ -150,9 +150,8 @@ public class KampanyaRestControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.results.aktifKampanyaSayisi", is(kampanyaListesiResponseDTO.getAktifKampanyaSayisi())))
                 .andExpect(jsonPath("$.results.deAktifKampanyaSayisi", is(kampanyaListesiResponseDTO.getDeAktifKampanyaSayisi())))
-                .andExpect(jsonPath("$.results.onayBekleyenKampanyaSayisi", is(kampanyaListesiResponseDTO.getOnayBekleyenKampanyaSayisi())));
-                //.andExpect(jsonPath("$.results.kampanyaList", is(kampanyaListesiResponseDTO.getKampanyaList())));
-        //TODO bunun için bir json dönüşümü gerekebilir
+                .andExpect(jsonPath("$.results.onayBekleyenKampanyaSayisi", is(kampanyaListesiResponseDTO.getOnayBekleyenKampanyaSayisi())))
+                .andExpect(jsonPath("$.results.kampanyaList.size()", is(1)));
     }
 
 

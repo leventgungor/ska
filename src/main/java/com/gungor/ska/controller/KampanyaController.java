@@ -24,9 +24,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @RequestMapping("/kampanya")
 @Tag(name = "Sigorta Kampanyası Servisleri")
-public class KampanyaRestController {
-
-    private static final String SUCCESS = "SUCCESS";
+public class KampanyaController {
 
     private final KampanyaService kampanyaService;
 
@@ -103,14 +101,14 @@ public class KampanyaRestController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
-    @GetMapping("durum-degisikligi-listele")
+    @GetMapping("/durum-degisikligi-listele")
     @Operation(summary = "Kampanyaya ait durum değişikliklerinin listesini getirir")
     public ResponseEntity<APIResponse<List<String>>> kampanyaDurumDegisikleriListele(@RequestParam Long kampanyaId) {
         List<String> changeLog = kampanyaService.getDurumDegisiklikleri(kampanyaId);
 
         APIResponse<List<String>> apiResponse = APIResponse
                 .<List<String>>builder()
-                .status("Kampanya durum değişiklikleri başarıyla listelendi.")
+                .status("Kampanyanın durum değişiklikleri başarıyla listelendi.")
                 .results(changeLog)
                 .build();
 
