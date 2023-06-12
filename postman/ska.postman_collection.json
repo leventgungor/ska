@@ -25,7 +25,7 @@
 			"response": []
 		},
 		{
-			"name": "kampanya kategorilerini listele",
+			"name": "kategorileri listele",
 			"request": {
 				"method": "GET",
 				"header": [],

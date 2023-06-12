@@ -1,33 +1,34 @@
 # Sigorta Kampanya API
 
-## Kullanılan Teknolojiler
-Java 17, Spring Boot 3.1, Spring Data, Maven 3, Swagger, 
-H2 Embedded Database, Lombok, Docker, Docker Compose, Micrometer, MapStruct
-
 ## Uygulama Tanımı
 Sigorta Kampanya API kullanıcının yeni sigorta kampanyası eklemesini, 
 var olan kampanyaları aktive ve deaktive etmesini, 
 tüm kampanyaları listelemesi sağlayan bir backend uygulamasıdır.
 Ayrıca kampanya kategorileri listeleme ve belirli kampanya üzerinde yapılan durum değişikliklerini listeleme yetenekleri de mevcuttur.
 
+## Kullanılan Teknolojiler
+Java 17, Maven Spring Boot, Spring Data, Swagger, Junit, Mocikto, MockMvc,
+H2, Lombok, Docker, Micrometer, MapStruct
+
 ## Teknik Detaylar
-* Veritabanı olarak H2 Embedded In Memory Database kullanılmıştır.
+* Verileri saklamak için H2 Embedded In Memory Database kullanılmıştır.
 * DTO ve Entity dönüşümleri için MapStruct kullanıldı.
 * 5 ms'den fazla süren işlemler interceptor ile araya girilerek micrometer ile loglanmaktadır.
-* Jakarta Validation Annotation'ları kullanılarak requestlerdeki doğrulamalar yapılmıştır.
+* Jakarta Validation anotasyonları kullanılarak requestlerdeki doğrulamalar yapılmıştır.
 * Hatalar ve istenmeyen durumlar GlobalExceptionHandler içinde handle edilmektedir.
 
-### Swagger
-Swagger UI için http://localhost:8080/swagger-ui/index.html adresinden endpointlere erişim sağlanır.
+### Swagger ve Postman Collection
+* Swagger UI için http://localhost:8080/swagger-ui/index.html adresinden endpointlere erişim sağlanır. 
 Swagger üzerinde örnek requestler ve açıklamaları mevcuttur.
+* Postman collection'da farklı caseler requestler oluşturulmuştur. [Postman Collection](postman/ska.postman_collection.json)
 
-### Test
+### Unit Test ve Entegrasyon Testi
 Unit testler için Junit5, Mockito ve WebMvcTest kullanılmıştır. 
-Testler BDD yaklaşımıyla yazılmıştır.
+Testler BDD yaklaşımıyla yazılmıştır. Unit testleri çalıştırmak için aşağıdaki komut çalıştırılır.
 ```shell
 ./mvnw test
 ```
-Entegrasyon testleri için MockMVC kullanılmıştır.
+Entegrasyon testleri için MockMvc kullanılmıştır. Entegrasyon testlerini koşmak için aşağıdaki komut çalıştırılır.
 ```shell
 ./mvnw verify -Pintegration-tests
 ```
@@ -42,7 +43,7 @@ Oluşturulan docker image'ından container ayağa kaldırmak için aşağıdaki 
 docker-compose up -d
 ``` 
 
-Kapatılmak istenirse bu komut çalıştırılır.
+Docker containerı durdurulup kaldırmak istenirse bu komut çalıştırılır.
 ```shell
 docker-compose down
 ```
