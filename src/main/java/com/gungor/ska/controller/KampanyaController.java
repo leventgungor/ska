@@ -103,7 +103,7 @@ public class KampanyaController {
 
     @GetMapping("/durum-degisikligi-listele")
     @Operation(summary = "Kampanyaya ait durum değişikliklerinin listesini getirir")
-    public ResponseEntity<APIResponse<List<String>>> kampanyaDurumDegisikleriListele(@RequestParam Long kampanyaId) {
+    public ResponseEntity<APIResponse<List<String>>> kampanyaDurumDegisikleriListele(@Schema(example = "1") @RequestParam Long kampanyaId) {
         List<String> changeLog = kampanyaService.getDurumDegisiklikleri(kampanyaId);
 
         APIResponse<List<String>> apiResponse = APIResponse

@@ -45,7 +45,7 @@ public class MetricInterceptor implements HandlerInterceptor {
         timer.record(timeTaken, TimeUnit.MILLISECONDS);
 
         if(timeTaken > 5) {
-            log.info("API response time for path " + request.getRequestURI() + " has taken "+ timeTaken + " ms");
+            log.info(request.getRequestURI() + " endpointi için api response suresi: "+ timeTaken + " ms");
         }
 
     }

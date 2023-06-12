@@ -4,7 +4,7 @@ services:
     image: ska:0.0.1
     container_name: ska
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:h2:file:./data/test
+      - SPRING_DATASOURCE_URL=jdbc:h2:mem:skadb
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=pass
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update

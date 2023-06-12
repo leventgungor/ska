@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -40,11 +41,6 @@ public class KampanyaControllerIntegrationTest {
 
     @BeforeEach
     void setup() {
-        kampanyaRepo.deleteAll();
-    }
-
-    @AfterEach
-    void tearDown(){
         kampanyaRepo.deleteAll();
     }
 
@@ -141,6 +137,34 @@ public class KampanyaControllerIntegrationTest {
                 .andExpect(jsonPath("$.results.deAktifKampanyaSayisi", is(0)))
                 .andExpect(jsonPath("$.results.onayBekleyenKampanyaSayisi", is(1)))
                 .andExpect(jsonPath("$.results.kampanyaList.size()", is(1)));
+    }
+
+    @Test
+    void givenKampanyaId_whenKampanyaDurumDegisikligiListele_thenReturnKampanyaChangeLog() throws Exception {
+        //given
+        Kampanya kampanya1 = new Kampanya();
+        kampanya1.setIlanBaslik("Yolcu360 Ek İndirim Kampanyası");
+        kampanya1.setDetayAciklamasi("Allianz müşterileri yolcu360.com ve mobil uygulaması  üzerinden günlük  1-29 gün araç kiralamada indirimli fiyatlar üzerinden %10 ek indirim fırsatından yararlanıyor!");
+        kampanya1.setKategori(KampanyaKategorisi.D);
+        kampanya1.setDurum(KampanyaDurum.OnayBekliyor);
+        kampanya1.setMukerrer(false);
+
+        String logMesaji = "Kampanya " + " " + LocalDateTime.now() + " tarihinde oluşturuldu.";
+        kampanya1.addChangelog(logMesaji);
+        kampanyaRepo.save(kampanya1);
+        kampanya1.setDurum(KampanyaDurum.Deaktif);
+        String logMesaji2 = "Kampanya " + kampanya1.getId() + " " + LocalDateTime.now() + " tarihinde aktive edildi.";
+        kampanya1.addChangelog(logMesaji2);
+        Kampanya savedKampanya = kampanyaRepo.save(kampanya1);
+
+        //when
+        ResultActions response = mockMvc.perform(get("/kampanya/durum-degisikligi-listele?kampanyaId={id}", savedKampanya.getId())
+                .contentType(MediaType.APPLICATION_JSON));
+
+        //then
+        response.andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.results.size()", is(2)));
     }
 
 }
