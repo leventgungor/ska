@@ -1,4 +1,8 @@
+
+
 spring:
+  application:
+    name: ska
   datasource:
     url: jdbc:h2:mem:skadb
     driverClassName: org.h2.Driver
@@ -19,3 +23,6 @@ management:
     web:
       exposure:
         include: metrics
+
+metric:
+  interceptor: enabled

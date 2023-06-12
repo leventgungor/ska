@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 public class KampanyaDTO {
 
-    private String kampanyaId;
+    private Long kampanyaId;
 
     private String ilanBaslik;
 
@@ -23,6 +23,4 @@ public class KampanyaDTO {
     private String durum;
 
     private boolean isMukerrer;
-
-    private List<String> changeLogs;
 }

@@ -12,13 +12,10 @@ services:
       - '8080:8080'
     volumes:
       - logVolume:/logs
-      - h2Volume:/data
     networks:
       - ska-net
 volumes:
   logVolume:
-  h2Volume:
-
 networks:
   ska-net:
     driver: bridge

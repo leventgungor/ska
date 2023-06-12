@@ -1,7 +1,7 @@
 package com.gungor.ska.service;
 
 import com.gungor.ska.dto.KampanyaDTO;
-import com.gungor.ska.dto.KampanyaListesiResponseDTO;
+import com.gungor.ska.dto.KampanyaListesiDTO;
 import com.gungor.ska.enm.KampanyaDurum;
 import com.gungor.ska.enm.KampanyaKategorisi;
 import com.gungor.ska.entity.Kampanya;
@@ -27,7 +27,7 @@ public class KampanyaService {
 
     private final KampanyaMapper kampanyaMapper;
 
-    public KampanyaDTO kampanyaEkle(KampanyaDTO kampanyaDTO) {
+    public KampanyaDTO kampanyaOlustur(KampanyaDTO kampanyaDTO) {
         Kampanya kampanya = kampanyaMapper.kampanyaDTOToKampanya(kampanyaDTO);
 
         Optional<KampanyaKategorisi> kampanyaKategorisi = KampanyaKategorisi.isimdenKampanyaGetir(kampanyaDTO.getKategori());
@@ -36,9 +36,9 @@ public class KampanyaService {
         );
 
         kampanya.setMukerrer(mukerrerKontrol(kampanya));
-        kampanya.setDurum(kampanya.getKategori().kampanyaDurumBelirle());
+        kampanya.setDurum(kampanya.getKategori().getKampanyaDurumu());
 
-        String logMesaji = "Kampanya " + kampanya.getId() + " " + LocalDateTime.now() + " tarihinde oluşturuldu.";
+        String logMesaji = "Kampanya " + " " + LocalDateTime.now() + " tarihinde oluşturuldu.";
         kampanya.addChangelog(logMesaji);
         Kampanya kayitliKampanya = kampanyaRepo.save(kampanya);
         log.info(logMesaji);
@@ -46,7 +46,7 @@ public class KampanyaService {
         return kampanyaMapper.kampanyaToKampanyaDTO(kayitliKampanya);
     }
 
-    public KampanyaDTO kampanyaAktiveEt(String kampanyaId){
+    public KampanyaDTO kampanyaAktiveEt(Long kampanyaId){
         Optional<Kampanya> kampanyaOp = kampanyaRepo.findById(Long.valueOf(kampanyaId));
         if(kampanyaOp.isEmpty())
             throw new BusinessException("Aktive Etmek istediğiniz kampanya bulunamadı.", HttpStatus.NOT_FOUND);
@@ -66,7 +66,7 @@ public class KampanyaService {
         return kampanyaMapper.kampanyaToKampanyaDTO(guncellenenKampanya);
     }
 
-    public KampanyaDTO kampanyaDeaktiveEt(String kampanyaId){
+    public KampanyaDTO kampanyaDeaktiveEt(Long kampanyaId){
         Optional<Kampanya> kampanyaOp = kampanyaRepo.findById(Long.valueOf(kampanyaId));
         if(kampanyaOp.isEmpty())
             throw new BusinessException("Deaktive Etmek istediğiniz kampanya bulunamadı!", HttpStatus.NOT_FOUND);
@@ -86,14 +86,18 @@ public class KampanyaService {
         return kampanyaMapper.kampanyaToKampanyaDTO(guncellenenKampanya);
     }
 
-    public KampanyaListesiResponseDTO tumKampayanlariListele(){
+    public KampanyaListesiDTO tumKampayanlariListele(){
         Iterable<Kampanya> tumKampanyalar = kampanyaRepo.findAll();
+
+        List<Kampanya> kampanyaList = StreamSupport.stream(tumKampanyalar.spliterator(), false).toList();
+        List<KampanyaDTO> kampanyaDTOList = kampanyaMapper.kampanyasToKampanyaDTOs(kampanyaList);
+
         int aktifSayisi = kampanyaRepo.countAllByDurum(KampanyaDurum.Aktif);
         int deaktifAsayisi = kampanyaRepo.countAllByDurum(KampanyaDurum.Deaktif);
         int onayBekleyenSayisi = kampanyaRepo.countAllByDurum(KampanyaDurum.OnayBekliyor);
 
-        KampanyaListesiResponseDTO response = new KampanyaListesiResponseDTO();
-        response.setKampanyaList(StreamSupport.stream(tumKampanyalar.spliterator(), false).toList());
+        KampanyaListesiDTO response = new KampanyaListesiDTO();
+        response.setKampanyaList(kampanyaDTOList);
         response.setAktifKampanyaSayisi(aktifSayisi);
         response.setDeAktifKampanyaSayisi(deaktifAsayisi);
         response.setOnayBekleyenKampanyaSayisi(onayBekleyenSayisi);
@@ -104,5 +108,14 @@ public class KampanyaService {
     private boolean mukerrerKontrol(Kampanya kampanya) {
         List<Kampanya> result = kampanyaRepo.findByKategoriAndIlanBaslikAndDetayAciklamasi(kampanya.getKategori(), kampanya.getIlanBaslik(), kampanya.getDetayAciklamasi());
         return !result.isEmpty();
+    }
+
+    public List<String> getDurumDegisiklikleri(Long kampanyaId) {
+        Optional<Kampanya> byId = kampanyaRepo.findById(kampanyaId);
+
+        if(!byId.isPresent())
+            throw new BusinessException("Aradığınız kampanya bulunamadı.", HttpStatus.NOT_FOUND);
+
+        return byId.get().getChangeLogs();
     }
 }

@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -13,15 +14,16 @@ import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Component
+@ConditionalOnProperty(
+        value="metric.interceptor",
+        havingValue = "enabled",
+        matchIfMissing = true)
 public class MetricInterceptor implements HandlerInterceptor {
 
     private Timer timer;
 
-    private SimpleMeterRegistry simpleMeterRegistry;
-
     @Autowired
     public MetricInterceptor(SimpleMeterRegistry simpleMeterRegistry) {
-        this.simpleMeterRegistry = simpleMeterRegistry;
         timer = simpleMeterRegistry.timer("controller.methods.timer");
     }
 

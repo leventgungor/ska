@@ -1,0 +1,262 @@
+{
+	"info": {
+		"_postman_id": "a94b8a8a-c8c5-4797-b748-8b13650ec3f0",
+		"name": "ska",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "kampanyaları listele",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/kampanya/kampanyalari-listele",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"kampanya",
+						"kampanyalari-listele"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "kampanya kategorilerini listele",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/kampanya/kategorileri-listele",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"kampanya",
+						"kategorileri-listele"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "durum degisikliği listele",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/kampanya/durum-degisikligi-listele?kampanyaId=1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"kampanya",
+						"durum-degisikligi-listele"
+					],
+					"query": [
+						{
+							"key": "kampanyaId",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "kampanya olustur",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"ilanBaslik\" : \"Online Kasko Sigortası Kampanyası\" ,\n    \"detayAciklamasi\" : \"Allianz'dan online Kasko Sigortası satın alan müşterilerimiz 500 TL Hepsiburada hediye çeki kazanıyor. \",\n    \"kategori\": \"Diğer\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/kampanya/olustur",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"kampanya",
+						"olustur"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "kampanya olustur 2",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"ilanBaslik\" : \"Bireysel Emeklilik Ek Katkı Payı Kampanyası\",\n    \"detayAciklamasi\" : \"Belirtilen tutarlarda “Ek Katkı” ödemesi yapan müşterilerimiz, mevcut ya da yeni müşteri ayrımı yapılmaksızın ilgili baremlere denk gelen ek katkı payı tutarını almaya hak kazanacaktır.\",\n    \"kategori\": \"Hayat Sigortası\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/kampanya/olustur",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"kampanya",
+						"olustur"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "kampanya olustur Hatalı Açıklama",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"ilanBaslik\" : \"Kampanya 2\" ,\n    \"detayAciklamasi\" : \" Kampanya 2\",\n    \"kategori\": \"OSS\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/kampanya/olustur",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"kampanya",
+						"olustur"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "kampanya olustur Hatalı Başlık",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"ilanBaslik\" : \"#Kampanya 2\" ,\n    \"detayAciklamasi\" : \" Kampanya 2\",\n    \"kategori\": \"OSS\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/kampanya/olustur",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"kampanya",
+						"olustur"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "kampanya olustur Hatalı Kategori",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"ilanBaslik\" : \"Kampanya 2\" ,\n    \"detayAciklamasi\" : \" Kampanya 2 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n    \"kategori\": \"OSS\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/kampanya/olustur",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"kampanya",
+						"olustur"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "kampanya aktive et",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/kampanya/aktive-et?kampanyaId=1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"kampanya",
+						"aktive-et"
+					],
+					"query": [
+						{
+							"key": "kampanyaId",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "kampanya deaktive et",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/kampanya/deaktive-et?kampanyaId=1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"kampanya",
+						"deaktive-et"
+					],
+					"query": [
+						{
+							"key": "kampanyaId",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

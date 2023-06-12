@@ -21,6 +21,6 @@ public class KampanyaRequestDTO {
     @Schema(description = "Detay Açıklaması", example = "İşyerim Sigortası ve/veya Güvenli İşyerim Sigortası’nda vadesi devam eden müşterilerimiz için MGS Güvenlik’ten %50 indirim fırsatı sunuyoruz.  ")
     private String detayAciklamasi;
 
-    @Schema(description = "Kampanya Kategorisi", example = "TSS")
+    @Schema(description = "Kampanya Kategorisi", example = "Tamamlayıcı Sağlık Sigortası")
     private String kategori;
 }
