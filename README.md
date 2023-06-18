@@ -4,11 +4,11 @@
 Sigorta Kampanya API kullanıcının yeni sigorta kampanyası eklemesini, 
 var olan kampanyaları aktive ve deaktive etmesini, 
 tüm kampanyaları listelemesi sağlayan bir backend uygulamasıdır.
-Ayrıca kampanya kategorileri listeleme ve belirli kampanya üzerinde yapılan durum değişikliklerini listeleme yetenekleri de mevcuttur.
+Ayrıca kampanya kategorileri listeleme ve belirli kampanya üzerinde yapılan durum değişikliklerini listeleme yeteneklerine de sahiptir.
 
 ## Kullanılan Teknolojiler
-Java 17, Maven Spring Boot, Spring Data, Swagger, Junit, Mocikto, MockMvc,
-H2, Lombok, Docker, Micrometer, MapStruct
+Java 17, Maven, Spring Boot, Spring Data, Swagger, Junit, Mocikto, MockMvc,
+H2, Lombok, Docker, Docker Compose, Micrometer, MapStruct, Logback
 
 ## Teknik Detaylar
 * Verileri saklamak için H2 Embedded In Memory Database kullanılmıştır.
@@ -32,6 +32,7 @@ Entegrasyon testleri için MockMvc kullanılmıştır. Entegrasyon testlerini ko
 ```shell
 ./mvnw verify -Pintegration-tests
 ```
+Test ortamında interceptor disabled hale getirilmiştir.
 
 ### Docker
 Uygulamayı dockerize etmek için aşağıdaki komut çalıştırılır. 
